@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Stiletto
 {
@@ -14,6 +15,7 @@ namespace Stiletto
         private static MakerSlider slider_AngleAnkle;
         private static MakerSlider slider_AngleLeg;
         private static MakerSlider slider_Height;
+        private static MakerButton button_Save;
 
         internal static void Init(Stiletto plugin)
         {
@@ -35,10 +37,12 @@ namespace Stiletto
             slider_AngleAnkle = e.AddControl(new MakerSlider(category, "AngleAnkle", 0f, 60f, 0f, plugin) { StringToValue = CreateStringToValueFunc(10f), ValueToString = CreateValueToStringFunc(10f), });
             slider_AngleLeg = e.AddControl(new MakerSlider(category, "AngleLeg", 0f, 60f, 0f, plugin) { StringToValue = CreateStringToValueFunc(10f), ValueToString = CreateValueToStringFunc(10f) });
             slider_Height = e.AddControl(new MakerSlider(category, "Height", 0f, 0.5f, 0f, plugin) { StringToValue = CreateStringToValueFunc(1000f), ValueToString = CreateValueToStringFunc(1000f) });
+            button_Save = e.AddControl(new MakerButton("Save Preset", category, plugin));
 
             slider_AngleAnkle.ValueChanged.Subscribe(x => MakerAPI.GetCharacterControl().GetComponent<HeelInfo>().SafeProc(y => y.AnkleAnglef = x));
             slider_AngleLeg.ValueChanged.Subscribe(x => MakerAPI.GetCharacterControl().GetComponent<HeelInfo>().SafeProc(y => y.LegAnglef = x));
             slider_Height.ValueChanged.Subscribe(x => MakerAPI.GetCharacterControl().GetComponent<HeelInfo>().SafeProc(y => y.Heightf = x));
+            button_Save.OnClick.AddListener(() => Stiletto.SaveHeelFile(MakerAPI.GetCharacterControl().GetComponent<HeelInfo>()));
         }
 
         internal static void UpdateMakerValues(HeelInfo heelInfo)

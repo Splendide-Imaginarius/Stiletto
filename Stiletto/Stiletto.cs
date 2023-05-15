@@ -98,7 +98,7 @@ namespace Stiletto
                 LoadHeelFile(__instance);
         }
 
-        private static void SaveHeelFile(HeelInfo hi)
+        internal static void SaveHeelFile(HeelInfo hi)
         {
             var configFile = Path.Combine(CONFIG_PATH, $"{hi.heelName}.xml");
             var shoeConfig = new XMLContainer(hi.id, hi.angleA.eulerAngles.x, hi.angleLeg.eulerAngles.x, hi.height.y);
